@@ -11,6 +11,18 @@ import (
 	"time"
 )
 
+// TambahEvent godoc
+// @Summary Tambah event baru
+// @Description Menambahkan data event ke database
+// @Tags event
+// @Accept json
+// @Produce json
+// @Param event body model.DataEvent true "Event data"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Security ApiKeyAuth
+// @Router /protected/event [post]
 func TambahEvent(c *fiber.Ctx) error {
 	userID := c.Locals("userID")
 	if userID == nil {
@@ -83,6 +95,14 @@ func TambahEvent(c *fiber.Ctx) error {
 	})
 }
 
+// GetAllEvent godoc
+// @Summary Ambil semua event
+// @Description Mengambil seluruh data event dari database
+// @Tags event
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 500 {object} map[string]string
+// @Router /event [get]
 func GetAllEvent(c *fiber.Ctx) error {
 	filter := bson.M{}
 
@@ -97,6 +117,16 @@ func GetAllEvent(c *fiber.Ctx) error {
 	})
 }
 
+// GetEventID godoc
+// @Summary Ambil detail event
+// @Description Mengambil data event berdasarkan ID
+// @Tags event
+// @Produce json
+// @Param id path string true "Event ID"
+// @Success 200 {object} map[string]interface{}
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /event/{id} [get]
 func GetEventID(c *fiber.Ctx) error {
 	id := c.Params("id")
 	filter := bson.M{"id": id}
@@ -111,6 +141,19 @@ func GetEventID(c *fiber.Ctx) error {
 	})
 }
 
+// EditEvent godoc
+// @Summary Edit event
+// @Description Mengubah data event berdasarkan ID
+// @Tags event
+// @Accept json
+// @Produce json
+// @Param id path string true "Event ID"
+// @Param event body model.DataEvent true "Event data baru"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Security ApiKeyAuth
+// @Router /protected/event/{id} [put]
 func EditEvent(c *fiber.Ctx) error {
 	id := c.Params("id")
 	filter := bson.M{"id": id}
@@ -137,6 +180,16 @@ func EditEvent(c *fiber.Ctx) error {
 	})
 }
 
+// DeleteEvent godoc
+// @Summary Hapus event
+// @Description Menghapus event berdasarkan ID
+// @Tags event
+// @Produce json
+// @Param id path string true "Event ID"
+// @Success 200 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Security ApiKeyAuth
+// @Router /protected/event/{id} [delete]
 func DeleteEvent(c *fiber.Ctx) error {
 	id := c.Params("id")
 	filter := bson.M{"id": id}

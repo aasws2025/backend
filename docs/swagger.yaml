@@ -1,0 +1,295 @@
+basePath: /api
+definitions:
+  model.AuthRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  model.DataEvent:
+    properties:
+      author_id:
+        type: string
+      deskripsi:
+        type: string
+      harga:
+        type: string
+      id:
+        type: string
+      judul:
+        type: string
+      kategori:
+        type: string
+      lokasi:
+        type: string
+      tanggal:
+        type: string
+    type: object
+  model.UserAccount:
+    properties:
+      alamat:
+        type: string
+      email:
+        type: string
+      nama:
+        type: string
+      password:
+        type: string
+      telfon:
+        type: string
+      userid:
+        type: string
+    type: object
+host: apievent.narasaon.me
+info:
+  contact: {}
+  description: Rest API untuk infokan event
+  title: Event Infokan API
+  version: "1.0"
+paths:
+  /event:
+    get:
+      description: Mengambil seluruh data event dari database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Ambil semua event
+      tags:
+      - event
+  /event/{id}:
+    get:
+      description: Mengambil data event berdasarkan ID
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Ambil detail event
+      tags:
+      - event
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login dengan email dan password, mengembalikan JWT token jika berhasil
+      parameters:
+      - description: Data login
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/model.AuthRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Login pengguna
+      tags:
+      - user
+  /protected/event:
+    post:
+      consumes:
+      - application/json
+      description: Menambahkan data event ke database
+      parameters:
+      - description: Event data
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/model.DataEvent'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Tambah event baru
+      tags:
+      - event
+  /protected/event/{id}:
+    delete:
+      description: Menghapus event berdasarkan ID
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Hapus event
+      tags:
+      - event
+    put:
+      consumes:
+      - application/json
+      description: Mengubah data event berdasarkan ID
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Event data baru
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/model.DataEvent'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Edit event
+      tags:
+      - event
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Membuat akun baru dengan validasi email dan nomor telepon
+      parameters:
+      - description: Data akun pengguna
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserAccount'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Registrasi akun baru
+      tags:
+      - user
+schemes:
+- https
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

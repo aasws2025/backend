@@ -5,10 +5,13 @@ import (
 	"api/handler/user"
 	"api/middleware"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/swagger"
 )
 
 func SetupRoutes(app *fiber.App) {
 	api := app.Group("/api")
+
+	api.Get("/docs/*", swagger.HandlerDefault)
 
 	api.Post("/register", user.CreateUser)
 	api.Post("/login", user.Authorize)

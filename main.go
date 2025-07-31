@@ -2,6 +2,7 @@ package main
 
 import (
 	"api/config"
+	_ "api/docs"
 	"api/router"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -10,6 +11,17 @@ import (
 	"strings"
 )
 
+// @title       Event Infokan API
+// @version     1.0
+// @description Rest API untuk infokan event
+// @host        apievent.narasaon.me
+// @BasePath    /api
+// @schemes     https
+// @securityDefinitions.apikey ApiKeyAuth
+// @type https
+// @scheme bearer
+// @in header
+// @name Authorization
 func main() {
 	app := fiber.New()
 	app.Use(logger.New())

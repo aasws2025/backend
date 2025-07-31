@@ -13,6 +13,17 @@ import (
 	"strings"
 )
 
+// CreateUser godoc
+// @Summary Registrasi akun baru
+// @Description Membuat akun baru dengan validasi email dan nomor telepon
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param user body model.UserAccount true "Data akun pengguna"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /register [post]
 func CreateUser(c *fiber.Ctx) error {
 	var requestData model.UserAccount
 	if err := c.BodyParser(&requestData); err != nil {
@@ -126,6 +137,18 @@ func GetOneUser(c *fiber.Ctx) error {
 	})
 }
 
+// Authorize godoc
+// @Summary Login pengguna
+// @Description Login dengan email dan password, mengembalikan JWT token jika berhasil
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param credentials body model.AuthRequest true "Data login"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /login [post]
 func Authorize(c *fiber.Ctx) error {
 	var requestData model.AuthRequest
 	if err := c.BodyParser(&requestData); err != nil {
